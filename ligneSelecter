@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# 0 if the parameter its a number otherwise its a 1
+beg=`echo $2 | grep -E [^0-9] | wc -l`
+end=`echo $3 | grep -E [^0-9] | wc -l`
+
+
+if [ $# -eq 3 ] && [ $beg -eq 0 ] && [ $end -eq 0 ] && [ -f $1 ]
+then
+	
+	beg=$2
+	end=$3
+	
+	if [ $beg -eq $end ]
+	then
+		exit
+	fi
+	
+	if [ $2 -gt $3 ]
+	then
+		beg=$3
+		end=$2
+	fi
+	
+	L=`wc -l $1 | cut -d " " -f 1` #Number of ligne
+	
+	if [ $end -gt $L ]
+	then
+		end=$[L+1]
+	fi
+	
+	
+	beg=$[ end - beg - 1 ]
+	end=$[end-1]
+	
+	head -n $end $1 | tail -n $beg 	
+
+
+fi
+
+
